@@ -1,44 +1,32 @@
-require "mongoid-sequence2/version"
 require "active_support/concern"
 
+require "mongoid-sequence2/version"
+# require "mongoid-sequence2/sequences"
+# require "mongoid-sequence2/sequence"
+
 module Mongoid
-  module Sequence
-    extend ActiveSupport::Concern
+  autoload :Sequence,  "mongoid-sequence2/sequence"
+  autoload :Sequences,  "mongoid-sequence2/sequences"
+  
+  module Sequence2
+    # Defines the collection in which the `Mongoid::Sequences` store_in.
+    mattr_accessor :collection_name
+    @@collection_name = :__sequences
 
-    included do
-      set_callback :validate, :before, :set_sequence, :unless => :persisted?
+    # Defines the session in which the `Mongoid::Sequences` store_in.
+    mattr_accessor :session
+    @@session = :default
+    # Allow configuring Mongoid::Sequence2 with a block
+    # now provide the specific custom default storage options for `Mongoid::Sequences`
+    #
+    # Example:
+    #
+    #     Mongoid::Sequence2.setup do |config|
+    #       config.session = :default
+    #       config.collection   = :__sequences
+    #     end
+    def self.setup
+      yield self
     end
-
-    def self.included(base)
-      base.extend(ClassMethods)
-    end
-
-    module ClassMethods
-      attr_accessor :sequence_fields
-
-      def sequence(fieldname)
-        self.sequence_fields ||= []
-        self.sequence_fields << fieldname
-      end
-    end
-
-    class Sequences
-      include Mongoid::Document
-      store_in collection: "__sequences"
-
-      field :fieldname
-      field :seq, type: Integer
-
-      def self.get_next_sequence(collection, fieldname)
-        Sequences.where(fieldname: "#{collection}_#{fieldname}").find_and_modify({'$inc' => {'seq' => 1}}, {'upsert' => 'true', :new => true}).seq
-      end
-    end
-
-    def set_sequence
-      self.class.sequence_fields.each do |f|
-        self[f] = Sequences.get_next_sequence(self.class.name.underscore, f)
-      end
-    end
-
   end
 end

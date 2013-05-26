@@ -1,3 +1,8 @@
+## 0.2.3
+
+* allow configuring Mongoid::Sequence2, now provide the specific custom default storage options for `Mongoid::Sequences`
+* some mistake amend
+
 ## 0.2.0
 
 * support to mongoid 3.0 - 4.0. and unit-test is passed

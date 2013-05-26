@@ -1,11 +1,12 @@
 require 'rubygems'
-require 'test/unit'
 require "bundler/setup"
 require "test/unit"
 require "mongoid"
 require 'database_cleaner'
 
-require File.expand_path("../../lib/mongoid-sequence2", __FILE__)
+$:.push File.expand_path("../lib", __FILE__)
+require "mongoid-sequence2"
+# require File.expand_path("../../lib/mongoid-sequence2", __FILE__)
 
 Mongoid.load!("./test/config/mongoid.yml", :test)
 
