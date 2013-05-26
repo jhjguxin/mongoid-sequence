@@ -12,6 +12,17 @@ https://github.com/agile42/mongoid_sequence2/ **from francis**
 
 ## Usage
 
+### setup
+
+since `v0.2.3` you can specific custom default storage options for `Mongoid::Sequences`, eg:
+
+    #config/initializers/sequence2.rb
+    Mongoid::Sequence2.setup do |config|
+     config.collection_name = :__sequences
+     config.session = :default
+    end
+
+
 Include `Mongoid::Sequence` in your class and call `sequence(:field)`.
 
 Like this:
