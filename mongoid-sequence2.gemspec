@@ -13,6 +13,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency("rake", "~> 0.9")
   gem.add_development_dependency "database_cleaner", "~> 0.9.1"
   gem.add_development_dependency "test-unit", "~> 2.5.5"
+  gem.add_development_dependency "debugger"
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   gem.files         = `git ls-files`.split("\n")
   gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

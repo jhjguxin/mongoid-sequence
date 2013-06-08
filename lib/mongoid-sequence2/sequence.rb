@@ -20,8 +20,10 @@ module Mongoid
     end
 
     def set_sequence
-      self.class.sequence_fields.each do |f|
-        self[f] = Sequences.get_next_sequence(self.class.name.underscore, f)
+      if self.class.sequence_fields.present?
+        self.class.sequence_fields.each do |f|
+          self[f] = Sequences.get_next_sequence(self.class.name.underscore, f)
+        end
       end
     end
 
