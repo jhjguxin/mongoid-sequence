@@ -60,6 +60,19 @@ s2 = Sequenced.create
 s2.id #=> 2 # and so on
 ```
 
+You can also have any per model sequence without need to create given model's objects:
+
+```ruby
+class Sequenced
+	include Mongoid::Document
+	include Mongoid::Sequence
+end
+
+Sequenced.next_sequence('some_name_1') #=> 1
+Sequenced.next_sequence('some_name_1') #=> 2
+Sequenced.next_sequence('some_name_2') #=> 1
+```
+
 ## Consistency
 
 Mongoid::Sequence uses the atomic [findAndModify](http://www.mongodb.org/display/DOCS/findAndModify+Command) command, so you shouldn't have to worry about the sequence's consistency.
