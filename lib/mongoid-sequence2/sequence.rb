@@ -17,12 +17,16 @@ module Mongoid
         self.sequence_fields ||= []
         self.sequence_fields << fieldname
       end
+
+      def next_sequence(field)
+        Sequences.get_next_sequence(self.name.underscore, field)
+      end
     end
 
     def set_sequence
       if self.class.sequence_fields.present?
         self.class.sequence_fields.each do |f|
-          self[f] = Sequences.get_next_sequence(self.class.name.underscore, f)
+          self[f] = self.class.next_sequence(f)
         end
       end
     end
