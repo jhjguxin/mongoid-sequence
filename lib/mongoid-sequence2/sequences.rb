@@ -7,9 +7,13 @@ module Mongoid
     field :fieldname
     field :seq, type: Integer
 
-    def self.get_next_sequence(collection, fieldname)
-      #Sequences.where(fieldname: "#{collection}_#{fieldname}").find_and_modify({'$inc' => {'seq' => 1}}, {'upsert' => 'true', :new => true}).seq
-      self.where(fieldname: "#{collection}_#{fieldname}").find_and_modify({'$inc' => {'seq' => 1}}, {'upsert' => 'true', :new => true}).seq
+    def self.get_next_sequence(collection, fieldname, step = 1)
+      step ||= 1
+      self.where(fieldname: "#{collection}_#{fieldname}").find_and_modify({'$inc' => {'seq' => step}}, {'upsert' => 'true', :new => true}).seq
+    end
+
+    def self.get_sequence(collection, fieldname)
+      seq = self.where(fieldname: "#{collection}_#{fieldname}").limit(1).first.try(:seq) || 1
     end
   end
 end

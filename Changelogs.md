@@ -1,3 +1,8 @@
+## 0.2.5
+
+* #1 Add `next_sequence` which allows to have any per model sequence, without need to create given model's objects. ([dawid-sklodowski](https://github.com/dawid-sklodowski))
+* `next_sequence` support give an special step value, but only work with no `auto_increment` field
+
 ## 0.2.4
 
 * fix call `sequence` with `nil` error, usually just `include Mongoid::Sequence` and no `sequence` been called will throw `undefined method `each' for nil:NilClas`

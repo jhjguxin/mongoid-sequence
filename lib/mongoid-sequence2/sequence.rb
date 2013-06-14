@@ -18,8 +18,13 @@ module Mongoid
         self.sequence_fields << fieldname
       end
 
-      def next_sequence(field)
-        Sequences.get_next_sequence(self.name.underscore, field)
+      def next_sequence(field, step = 1)
+        step ||= 1
+        Sequences.get_next_sequence(self.name.underscore, field, step)
+      end
+
+      def get_sequence(field)
+        Sequences.get_sequence(self.name.underscore, field)
       end
     end
 

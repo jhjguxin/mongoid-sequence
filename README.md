@@ -71,7 +71,14 @@ end
 Sequenced.next_sequence('some_name_1') #=> 1
 Sequenced.next_sequence('some_name_1') #=> 2
 Sequenced.next_sequence('some_name_2') #=> 1
+# can also give an special step
+Sequenced.next_sequence('some_name_2', 2) #=> 3
 ```
+
+**notice**:
+
+for `v0.2.5`, `step` should only work with no `auto_increment` field, more info check `test/reference_test.rb`
+
 
 ## Consistency
 
