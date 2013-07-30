@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=640" />
+
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
+    <title>Mongoid-sequence2 by jhjguxin</title>
+  </head>
+
+  <body>
+    <a id="forkme_banner" href="https://github.com/jhjguxin/mongoid-sequence2">View on GitHub</a>
+    <div class="shell">
+
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Mongoid-sequence2</h1>
+            <h2>Specify fields to behave like a sequence number (exactly like the &quot;id&quot; column in conventional SQL flavors) while using Mongoid.</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
+
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/jhjguxin/mongoid-sequence2/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/jhjguxin/mongoid-sequence2/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
+
+
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
+        <h1>
+<a name="mongoid-sequence" class="anchor" href="#mongoid-sequence"><span class="octicon octicon-link"></span></a>Mongoid Sequence</h1>
+
+<p>Mongoid Sequence allows you to specify fields to behave like a sequence number (exactly like the "id" column in conventional SQL flavors).</p>
+
+<h2>
+<a name="credits" class="anchor" href="#credits"><span class="octicon octicon-link"></span></a>Credits</h2>
+
+<p>This gem was inspired by a couple of gists by <a href="https://gist.github.com/730677">masatomo</a> and <a href="https://gist.github.com/1086265">ShogunPanda</a>.</p>
+
+<p>and</p>
+
+<p><a href="https://github.com/agile42/mongoid_sequence2/">https://github.com/agile42/mongoid_sequence2/</a> <strong>from francis</strong></p>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<h3>
+<a name="setup" class="anchor" href="#setup"><span class="octicon octicon-link"></span></a>setup</h3>
+
+<p>since <code>v0.2.3</code> you can specific custom default storage options for <code>Mongoid::Sequences</code>, eg:</p>
+
+<pre><code>#config/initializers/sequence2.rb
+Mongoid::Sequence2.setup do |config|
+ config.collection_name = :__sequences
+ config.session = :default
+end
+</code></pre>
+
+<p>Include <code>Mongoid::Sequence</code> in your class and call <code>sequence(:field)</code>.</p>
+
+<p>Like this:</p>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Sequenced</span>
+    <span class="kp">include</span> <span class="ss">Mongoid</span><span class="p">:</span><span class="ss">:Document</span>
+    <span class="kp">include</span> <span class="ss">Mongoid</span><span class="p">:</span><span class="ss">:Sequence</span>
+
+    <span class="n">field</span> <span class="ss">:my_sequence</span><span class="p">,</span> <span class="ss">:type</span> <span class="o">=&gt;</span> <span class="nb">Integer</span>
+    <span class="n">sequence</span> <span class="ss">:my_sequence</span>
+<span class="k">end</span>
+
+<span class="n">s1</span> <span class="o">=</span> <span class="no">Sequenced</span><span class="o">.</span><span class="n">create</span>
+<span class="n">s1</span><span class="o">.</span><span class="n">sequence</span> <span class="c1">#=&gt; 1</span>
+
+<span class="n">s2</span> <span class="o">=</span> <span class="no">Sequenced</span><span class="o">.</span><span class="n">create</span>
+<span class="n">s2</span><span class="o">.</span><span class="n">sequence</span> <span class="c1">#=&gt; 2 # and so on</span>
+</pre></div>
+
+<p>It's also possible to make the <code>id</code> field behave like this:</p>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Sequenced</span>
+    <span class="kp">include</span> <span class="ss">Mongoid</span><span class="p">:</span><span class="ss">:Document</span>
+    <span class="kp">include</span> <span class="ss">Mongoid</span><span class="p">:</span><span class="ss">:Sequence</span>
+
+    <span class="n">sequence</span> <span class="ss">:_id</span>
+<span class="k">end</span>
+
+<span class="n">s1</span> <span class="o">=</span> <span class="no">Sequenced</span><span class="o">.</span><span class="n">create</span>
+<span class="n">s1</span><span class="o">.</span><span class="n">id</span> <span class="c1">#=&gt; 1</span>
+
+<span class="n">s2</span> <span class="o">=</span> <span class="no">Sequenced</span><span class="o">.</span><span class="n">create</span>
+<span class="n">s2</span><span class="o">.</span><span class="n">id</span> <span class="c1">#=&gt; 2 # and so on</span>
+</pre></div>
+
+<p>You can also have any per model sequence without need to create given model's objects:</p>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Sequenced</span>
+    <span class="kp">include</span> <span class="ss">Mongoid</span><span class="p">:</span><span class="ss">:Document</span>
+    <span class="kp">include</span> <span class="ss">Mongoid</span><span class="p">:</span><span class="ss">:Sequence</span>
+<span class="k">end</span>
+
+<span class="no">Sequenced</span><span class="o">.</span><span class="n">next_sequence</span><span class="p">(</span><span class="s1">'some_name_1'</span><span class="p">)</span> <span class="c1">#=&gt; 1</span>
+<span class="no">Sequenced</span><span class="o">.</span><span class="n">next_sequence</span><span class="p">(</span><span class="s1">'some_name_1'</span><span class="p">)</span> <span class="c1">#=&gt; 2</span>
+<span class="no">Sequenced</span><span class="o">.</span><span class="n">next_sequence</span><span class="p">(</span><span class="s1">'some_name_2'</span><span class="p">)</span> <span class="c1">#=&gt; 1</span>
+<span class="c1"># can also give an special step</span>
+<span class="no">Sequenced</span><span class="o">.</span><span class="n">next_sequence</span><span class="p">(</span><span class="s1">'some_name_2'</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">#=&gt; 3</span>
+</pre></div>
+
+<p><strong>notice</strong>:</p>
+
+<p>for <code>v0.2.5</code>, <code>step</code> should only work with no <code>auto_increment</code> field, more info check <code>test/reference_test.rb</code></p>
+
+<h2>
+<a name="consistency" class="anchor" href="#consistency"><span class="octicon octicon-link"></span></a>Consistency</h2>
+
+<p>Mongoid::Sequence uses the atomic <a href="http://www.mongodb.org/display/DOCS/findAndModify+Command">findAndModify</a> command, so you shouldn't have to worry about the sequence's consistency.</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Just add it to your projects' <code>Gemfile</code>:</p>
+
+<div class="highlight"><pre><span class="n">gem</span> <span class="s2">"mongoid-sequence2"</span>
+</pre></div>
+
+<h2>
+<a name="thanks" class="anchor" href="#thanks"><span class="octicon octicon-link"></span></a>Thanks</h2>
+
+<p>thanks <a href="https://github.com/masatomo">masatomo</a>, <a href="https://github.com/goncalossilva">goncalossilva</a>, <a href="https://github.com/agile42">agile42</a></p>
+
+<hr><p>Copyright © 2010 Gonçalo Silva, released under the MIT license</p>
+      </section>
+
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/jhjguxin">jhjguxin</a> can be found on <a href="https://github.com/jhjguxin/mongoid-sequence2">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
