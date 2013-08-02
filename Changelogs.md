@@ -1,7 +1,12 @@
-## 0.3.0
+## 0.3.1
+
+* fix dependence error on `0.3.0`
+
+## 0.3.0.yanked
 
 * `activesupport` dependence change as `[">= 3.0.0","< 4.0.0"]`
 * now support rails 4, and still compatible with rails 3
+* define `activesupport` and `mongoid` error
 
 ## 0.2.5
 
