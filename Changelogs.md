@@ -1,3 +1,8 @@
+## 0.3.0
+
+* `activesupport` dependence change as `[">= 3.0.0","< 4.0.0"]`
+* now support rails 4, and still compatible with rails 3
+
 ## 0.2.5
 
 * #1 Add `next_sequence` which allows to have any per model sequence, without need to create given model's objects. ([dawid-sklodowski](https://github.com/dawid-sklodowski))
