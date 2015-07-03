@@ -1,9 +1,12 @@
 require 'rubygems'
 require "bundler/setup"
+require 'active_support'
+require 'active_support/core_ext'
 require "test/unit"
 require "mongoid"
+require "mongoid/paranoia"
 require 'database_cleaner'
-require "debugger"
+require "byebug"
 
 $:.push File.expand_path("../lib", __FILE__)
 

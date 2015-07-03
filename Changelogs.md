@@ -1,3 +1,8 @@
+## 0.4.0
+
+* `activesupport` dependence change as `[">= 3.0.0","< 4.2.0"]`
+* `mongoid` dependence change as `[">= 3.0.0","<= 3.1"]` # mongoid 4 _id been protected, and consistency test failure
+
 ## 0.3.1
 
 * fix dependence error on `0.3.0`
